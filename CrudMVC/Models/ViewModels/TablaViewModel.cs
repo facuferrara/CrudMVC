@@ -24,6 +24,7 @@ namespace CrudMVC.Models.ViewModels
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "fecha_nacimiento")]
-        public DateTime fecha_nacimiento { get; set;}
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime Fecha_nacimiento { get; set;}
     }
 }

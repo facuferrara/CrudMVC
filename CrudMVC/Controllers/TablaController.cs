@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CrudMVC.Models;
 using CrudMVC.Models.ViewModels;
-
+using System.Data.Entity;
 
 namespace CrudMVC.Controllers
 {
@@ -16,7 +16,7 @@ namespace CrudMVC.Controllers
         {
             List<ListTablaViewModel> lst;
 
-            using (CrudEntities db = new CrudEntities())
+            using (CrudEntities1 db = new CrudEntities1())
             {
                 lst = (from d in db.tabla
                        select new ListTablaViewModel
@@ -24,7 +24,7 @@ namespace CrudMVC.Controllers
                            Id = d.Id,
                            Nombre = d.Nombre,
                            Correo = d.Correo,
-                           fecha_nacimiento = d.fecha_nacimiento,
+                           Fecha_nacimiento = d.Fecha_nacimiento,
 
                        }).ToList();
 
@@ -45,14 +45,16 @@ namespace CrudMVC.Controllers
         {
             try
             {
-                if ( ModelState.IsValid )
+                if ( ModelState.IsValid)
                 {
-                    using (CrudEntities db = new CrudEntities())
+                    using (CrudEntities1 db = new CrudEntities1())
                     {
-                        var oTabla = new tabla();
-                        oTabla.Nombre = model.Nombre;
-                        oTabla.Correo = model.Correo;
-                        oTabla.fecha_nacimiento = model.fecha_nacimiento;
+                        var oTabla = new tabla
+                        {
+                            Nombre = model.Nombre,
+                            Correo = model.Correo,
+                            Fecha_nacimiento = model.Fecha_nacimiento
+                        };
 
                         db.tabla.Add(oTabla);
                         db.SaveChanges();
@@ -74,13 +76,14 @@ namespace CrudMVC.Controllers
         public ActionResult Editar(int Id)
         {
             TablaViewModel model = new TablaViewModel();
-            using (CrudEntities db = new CrudEntities())
+            using (CrudEntities1 db = new CrudEntities1())
             {
                 var oTabla = db.tabla.Find(Id);
                 model.Id = oTabla.Id;
                 model.Nombre = oTabla.Nombre;
                 model.Correo = oTabla.Correo;
-                model.fecha_nacimiento = oTabla.fecha_nacimiento;
+                model.Fecha_nacimiento = oTabla.Fecha_nacimiento;
+                model.Id = oTabla.Id;
             }
             return View(model);
         }
@@ -92,14 +95,15 @@ namespace CrudMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (CrudEntities db = new CrudEntities())
+                    using (CrudEntities1 db = new CrudEntities1())
                     {
                         var oTabla = db.tabla.Find(model.Id);
                         oTabla.Nombre = model.Nombre;
                         oTabla.Correo = model.Correo;
-                        oTabla.fecha_nacimiento = model.fecha_nacimiento;
+                        oTabla.Fecha_nacimiento = model.Fecha_nacimiento;
 
-                        db.Entry(oTabla).State = System.Data.Entity.EntityState.Modified;
+                        //db.Entry(oTabla).State = System.Data.Entity.EntityState.Modified;
+                        db.Entry(oTabla).State = EntityState.Modified;
                         db.SaveChanges();
                     }
 
@@ -113,6 +117,19 @@ namespace CrudMVC.Controllers
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        [HttpGet]
+        public ActionResult Eliminar(int Id)
+        {
+            using (CrudEntities1 db = new CrudEntities1())
+            {
+                var oTabla = db.tabla.Find(Id);
+                db.tabla.Remove(oTabla);
+                //db.Entry(oTabla).State = EntityState.Deleted;
+                db.SaveChanges();
+            }
+            return Redirect("~/Crud/");
         }
 
     }

@@ -10,7 +10,7 @@ namespace CrudMVC.Models.ViewModels
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Correo { get; set; }
-        public DateTime fecha_nacimiento { get; set; }
+        public DateTime Fecha_nacimiento { get; set; }
 
     }   
 }

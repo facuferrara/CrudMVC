@@ -20,16 +20,17 @@
             </tr>
             @foreach (var oElemento in Model)
             {
-                <tr>
-                    <td>@oElemento.Id</td>
-                    <td>@oElemento.Nombre</td>
-                    <td>@oElemento.Correo</td>
-                    <td>
-                        <a class="btn btn-default"  href="~/Crud/Editar/oElemento.id">Editar</a>
-                        <a class="btn btn-danger"  href="~/Crud/Eliminar/oElemento.id">Eliminar</a>
+            <tr>
+                <td>@oElemento.Id</td>
+                <td>@oElemento.Nombre</td>
+                <td>@oElemento.Correo</td>
+                <td>@oElemento.Fecha_nacimiento</td>
+                <td>
+                    <a class="btn btn-default" href="~/Crud/Editar/@oElemento.Id">Editar</a>
+                    <a class="btn btn-danger" href="~/Crud/Eliminar/@oElemento.Id">Eliminar</a>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
             }
 
         </table>
